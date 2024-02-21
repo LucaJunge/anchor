@@ -86,4 +86,13 @@ export default class Quiz extends EventDispatcher {
     // return the result boolean
     return result
   }
+
+  finish() {
+    // if all questions have been answered, trigger the finished event
+    if (this.answeredQuestions >= this.length) {
+      this.finished = true
+
+      this.dispatchEvent({ type: 'finished' })
+    }
+  }
 }
