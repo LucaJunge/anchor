@@ -1,11 +1,18 @@
-import { AmbientLight, Color, EventDispatcher, PerspectiveCamera, Scene, WebGLRenderer } from 'three'
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
-import CannonDebugger from 'cannon-es-debugger'
-import { WebXRHandler } from './WebXR'
-import { Loader } from './Loader'
-import { Input } from './Input'
-import { World } from 'miniplex'
-import { Physics } from './Physics'
+import {
+  AmbientLight,
+  Color,
+  EventDispatcher,
+  PerspectiveCamera,
+  Scene,
+  WebGLRenderer,
+} from "three"
+import { OrbitControls } from "three/addons/controls/OrbitControls.js"
+import CannonDebugger from "cannon-es-debugger"
+import { WebXRHandler } from "./WebXR"
+import { Loader } from "./Loader"
+import { Input } from "./Input"
+import { World } from "miniplex"
+import { Physics } from "./Physics"
 
 let instance = null
 
@@ -20,11 +27,20 @@ export class App extends EventDispatcher {
 
     this.world = new World() // miniplex ECS world
     this.physics = new Physics() // CannonJS physics world
-    this.canvas = document.querySelector('#app')
-    this.canvas.classList.add('app')
+    this.canvas = document.querySelector("#app")
+    this.canvas.classList.add("app")
     this.scene = new Scene()
-    this.camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.01, 1000)
-    this.renderer = new WebGLRenderer({ canvas: this.canvas, antialias: true, alpha: true })
+    this.camera = new PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.01,
+      1000
+    )
+    this.renderer = new WebGLRenderer({
+      canvas: this.canvas,
+      antialias: true,
+      alpha: true,
+    })
     this.renderer.setSize(window.innerWidth, window.innerHeight)
     this.renderer.pixelRatio = Math.max(window.devicePixelRatio, 2)
     this.renderer.xr.enabled = true
@@ -43,7 +59,7 @@ export class App extends EventDispatcher {
     let ambientLight = new AmbientLight(0xffffff, 1)
     this.scene.add(ambientLight)
 
-    window.addEventListener('resize', () => {
+    window.addEventListener("resize", () => {
       this.onResize()
     })
   }
@@ -54,21 +70,25 @@ export class App extends EventDispatcher {
       this.xr.checkXRSupport()
     }
 
-    this.renderer.setAnimationLoop(() => {
-      this.update()
+    this.renderer.setAnimationLoop((timestamp, frame) => {
+      this.update(timestamp, frame)
     })
   }
 
   /** Compile a list of all the necessary systems from miniplex */
   querySystems() {
-    this.meshEntities = this.world.with('mesh').without('physics')
-    this.physicsEntities = this.world.with('mesh', 'physics')
+    this.meshEntities = this.world.with("mesh").without("physics")
+    this.physicsEntities = this.world.with("mesh", "physics")
     //this.movingEntities = this.world.with("position", "velocity")
   }
 
   /** Advance the instance game loop and systems */
-  update() {
-    this.dispatchEvent({ type: 'update', message: 'update' })
+  update(timestamp, frame) {
+    this.dispatchEvent({ type: "update", message: "update" })
+
+    if (frame) {
+      this.xr.update(timestamp, frame)
+    }
 
     // Run the simulation every 1 / 60 ms
     this.physics.world.fixedStep()
@@ -140,7 +160,11 @@ export class App extends EventDispatcher {
           for (const key of Object.keys(material)) {
             const possibleTexture = material[key]
 
-            if (possibleTexture && typeof possibleTexture === 'object' && 'minFilter' in possibleTexture) {
+            if (
+              possibleTexture &&
+              typeof possibleTexture === "object" &&
+              "minFilter" in possibleTexture
+            ) {
               possibleTexture.dispose
             }
           }

@@ -1,28 +1,34 @@
-import { resolve } from 'path'
-import { defineConfig } from 'vite'
-import { readFileSync } from 'fs'
+import { resolve } from "path"
+import { defineConfig } from "vite"
+import { readFileSync } from "fs"
+import viteBasicSslPlugin from "@vitejs/plugin-basic-ssl"
 
-const options = {
-  cert: readFileSync('C:\\httpscert\\localhost.pem'),
-  key: readFileSync('C:\\httpscert\\localhost-key.pem'),
+const options = null
+try {
+  const options = {
+    cert: readFileSync("C:\\httpscert\\localhost.pem"),
+    key: readFileSync("C:\\httpscert\\localhost-key.pem"),
+  }
+} catch (error) {
+  //console.log(error)
 }
 
 export default defineConfig({
   server: {
     https: options,
   },
-  plugins: [],
+  plugins: [viteBasicSslPlugin()],
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/Entry.js'),
-      name: 'Anchor',
-      fileName: 'anchor',
+      entry: resolve(__dirname, "src/Entry.js"),
+      name: "Anchor",
+      fileName: "anchor",
     },
     rollupOptions: {
-      external: ['three'],
+      external: ["three"],
       output: {
         globals: {
-          three: 'three',
+          three: "three",
         },
       },
     },
