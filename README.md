@@ -48,3 +48,7 @@ app.addEventListener('update', (event) => {
 // Finally, start the game loop
 app.start()
 ```
+
+# Documentation
+
+The documentation is currently work in Progress. A first draft can be seen at [DOCUMENTATION.md](/DOCUMENTATION.md)
