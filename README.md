@@ -1,4 +1,6 @@
-<img src="assets/logo_with_name.png" width="400px"/>
+<p align="center">
+  <img src="assets/logo_name.png" width="300px"/>
+</p>
 
 # About
 
