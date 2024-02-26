@@ -9,7 +9,7 @@ canvas.app {
   display: block;
 }
 
-#xr-button {
+.xr-button {
   margin: 10px;
   position: absolute;
   font-weight: 900;
@@ -24,20 +24,20 @@ canvas.app {
 }
 
 /* Clicked (Active) Button Style */
-#xr-button:active {
+.xr-button:active {
   box-shadow: none;
   transform: translateY(5px);
 }
 
 /* Disabled Button Style*/
-#xr-button:disabled {
+.xr-button:disabled {
   color: #ffffff;
   background-color: #afafaf;
   box-shadow: 0 5px 0 #777777;
 }
 
 /* Disabled and Clicked (Active) Button Style */
-#xr-button:active:disabled {
+.xr-button:active:disabled {
   color: #ffffff;
   background-color: #afafaf;
   box-shadow: none;

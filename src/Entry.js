@@ -8,5 +8,6 @@ import { createRandomObjects } from './Utils/Prototyping'
 // Utils
 import { createCube, createSphere } from './Utils/PrimitiveMeshes'
 import { Line } from './Utils/Line'
+import { XRIndicator } from './Utils/XRIndicator'
 
-export { App, WebXRHandler, createCube, createSphere, createRandomObjects, Line }
+export { App, WebXRHandler, createCube, createSphere, createRandomObjects, Line, XRIndicator }
