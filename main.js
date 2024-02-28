@@ -1,6 +1,8 @@
 import './style.css'
 import { DirectionalLight, Vector3 } from 'three'
 import { App, XRIndicator } from './src/Entry'
+import { AnimationComponent } from './src/Components/AnimationComponent'
+import { MeshComponent } from './src/Components/MeshComponent'
 
 let app = new App()
 app.camera.position.z = 1
@@ -55,6 +57,31 @@ let dirLight = new DirectionalLight(0xffffff, 1)
 dirLight.position.x = -2
 dirLight.position.z = -0.2
 app.scene.add(dirLight)
+
+// Player entity
+let playerEntity = app.world.add({})
+app.world.addComponent(playerEntity, 'position', { x: 0, y: 0, z: 0 })
+app.world.addComponent(playerEntity, 'mesh', new MeshComponent())
+app.world.addComponent(playerEntity, 'animation', new AnimationComponent())
+
+// Add data to the mesh component
+await playerEntity.mesh.addMesh('/assets/mesh.gltf')
+
+// add the entity to the miniplex world
+app.world.add(playerEntity)
+
+// add the animation data to the entity
+playerEntity.animation.setup(playerEntity)
+
+let toggle = false
+setInterval(() => {
+  toggle = !toggle
+  if (toggle) {
+    playerEntity.animation.play('Run')
+  } else {
+    playerEntity.animation.play('Idle')
+  }
+}, 1000)
 
 app.addEventListener('update', (event) => {
   // ...

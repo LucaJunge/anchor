@@ -1,4 +1,5 @@
 import { AmbientLight, Color, EventDispatcher, PerspectiveCamera, Scene, WebGLRenderer } from 'three'
+import { Timer } from 'three/addons/misc/Timer.js'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import CannonDebugger from 'cannon-es-debugger'
 import { WebXRHandler } from './WebXR'
@@ -29,6 +30,7 @@ export class App extends EventDispatcher {
       antialias: true,
       alpha: true,
     })
+    this.timer = new Timer()
     this.renderer.setSize(window.innerWidth, window.innerHeight)
     this.renderer.pixelRatio = Math.max(window.devicePixelRatio, 2)
     this.renderer.xr.enabled = true
@@ -67,12 +69,16 @@ export class App extends EventDispatcher {
   querySystems() {
     this.meshEntities = this.world.with('mesh').without('physics')
     this.physicsEntities = this.world.with('mesh', 'physics')
+    this.animationEntities = this.world.with('animation')
     //this.movingEntities = this.world.with("position", "velocity")
   }
 
   /** Advance the instance game loop and systems */
   update(timestamp, frame) {
     this.dispatchEvent({ type: 'update', message: 'update' })
+
+    this.timer.update(timestamp)
+    const delta = this.timer.getDelta()
 
     if (frame) {
       this.xr.update(timestamp, frame)
@@ -84,6 +90,7 @@ export class App extends EventDispatcher {
 
     //this.movementSystem()
     this.physicsSystem()
+    this.animationSystem(delta)
 
     //this.inputSystem()
 
@@ -92,6 +99,7 @@ export class App extends EventDispatcher {
     this.renderer.render(this.scene, this.camera)
   }
 
+  /** TODO: Create Systems as separate files in src/Systems/  */
   /** Get access to the input system */
   inputSystem() {}
 
@@ -110,6 +118,12 @@ export class App extends EventDispatcher {
       mesh.position.x += velocity.x
       mesh.position.y += velocity.y
       mesh.position.z += velocity.z
+    }
+  }
+
+  animationSystem(delta) {
+    for (const { animation } of this.animationEntities) {
+      animation.animationMixer.update(delta)
     }
   }
 
@@ -170,10 +184,5 @@ export class App extends EventDispatcher {
   addOrbitControls() {
     let controls = new OrbitControls(this.camera, this.renderer.domElement)
     return controls
-  }
-
-  /** Add an empty entity to the miniplex world */
-  addEntity() {
-    return this.world.add({})
   }
 }
