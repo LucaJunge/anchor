@@ -1,6 +1,6 @@
-import { AnimationMixer, Object3D } from 'three'
-import { clone } from 'three/addons/utils/SkeletonUtils.js'
-import { App } from '../Entry'
+import { AnimationMixer, Object3D } from "three"
+import { clone } from "three/addons/utils/SkeletonUtils.js"
+import { App } from "../Entry"
 
 export class AnimationComponent {
   constructor() {
@@ -16,9 +16,9 @@ export class AnimationComponent {
     let clonedScene = clone(entity.mesh.data.scene)
     root.add(clonedScene)
 
-    this.app.scene.add(root)
     this.animationMixer = new AnimationMixer(clonedScene)
     this.addAnimations(entity.mesh.data.animations)
+    return root
   }
 
   addAnimations(animationClips) {
@@ -33,7 +33,9 @@ export class AnimationComponent {
   }
 
   play(animationClipName) {
-    let action = this.animationActions.find((action) => action._clip.name === animationClipName)
+    let action = this.animationActions.find(
+      (action) => action._clip.name === animationClipName
+    )
     action.play()
   }
 }
