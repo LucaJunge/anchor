@@ -67,10 +67,9 @@ export class App extends EventDispatcher {
 
   /** Compile a list of all the necessary systems from miniplex */
   querySystems() {
-    this.meshEntities = this.world.with('mesh').without('physics')
+    this.meshEntities = this.world.with('mesh').without('physics').with('position')
     this.physicsEntities = this.world.with('mesh', 'physics')
     this.animationEntities = this.world.with('animation')
-    //this.movingEntities = this.world.with("position", "velocity")
   }
 
   /** Advance the instance game loop and systems */
@@ -88,7 +87,7 @@ export class App extends EventDispatcher {
     this.physics.world.fixedStep()
     this.cannonDebugger.update()
 
-    //this.movementSystem()
+    this.movementSystem()
     this.physicsSystem()
     this.animationSystem(delta)
 
@@ -114,10 +113,11 @@ export class App extends EventDispatcher {
 
   // Maybe pull the systems out of App.js
   movementSystem() {
-    for (const { mesh, velocity } of this.meshEntities) {
-      mesh.position.x += velocity.x
-      mesh.position.y += velocity.y
-      mesh.position.z += velocity.z
+    for (const { mesh, position } of this.meshEntities) {
+      console.log(mesh)
+      mesh.data.scene.position.x = position.x
+      mesh.data.scene.position.y = position.y
+      mesh.data.scene.position.z = position.z
     }
   }
 

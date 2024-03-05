@@ -1,6 +1,6 @@
-import { AnimationMixer, Object3D } from "three"
-import { clone } from "three/addons/utils/SkeletonUtils.js"
-import { App } from "../Entry"
+import { AnimationMixer, Object3D } from 'three'
+import { clone } from 'three/addons/utils/SkeletonUtils.js'
+import { App } from '../Entry'
 
 export class AnimationComponent {
   constructor() {
@@ -8,17 +8,19 @@ export class AnimationComponent {
     this.animationMixer = null
     this.animationClips = []
     this.animationActions = []
+    this.root = null
   }
 
   setup(entity) {
-    let root = new Object3D()
+    //this.root = new Object3D()
 
-    let clonedScene = clone(entity.mesh.data.scene)
-    root.add(clonedScene)
+    // Do we need to clone this?
+    //let clonedScene = clone(entity.mesh.data.scene)
+    //this.root.add(clonedScene)
 
-    this.animationMixer = new AnimationMixer(clonedScene)
+    this.animationMixer = new AnimationMixer(entity.mesh.data.scene)
     this.addAnimations(entity.mesh.data.animations)
-    return root
+    //return root
   }
 
   addAnimations(animationClips) {
@@ -33,9 +35,11 @@ export class AnimationComponent {
   }
 
   play(animationClipName) {
-    let action = this.animationActions.find(
-      (action) => action._clip.name === animationClipName
-    )
-    action.play()
+    let action = this.animationActions.find((action) => action._clip.name === animationClipName)
+    if (action) {
+      action.play()
+    } else {
+      throw new Error($`No action with the name ${animationClipName} found.`)
+    }
   }
 }
