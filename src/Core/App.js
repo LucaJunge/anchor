@@ -114,7 +114,6 @@ export class App extends EventDispatcher {
   // Maybe pull the systems out of App.js
   movementSystem() {
     for (const { mesh, position } of this.meshEntities) {
-      console.log(mesh)
       mesh.data.scene.position.x = position.x
       mesh.data.scene.position.y = position.y
       mesh.data.scene.position.z = position.z
