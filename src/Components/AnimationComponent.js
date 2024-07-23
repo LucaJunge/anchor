@@ -67,13 +67,13 @@ export class AnimationComponent {
   }
 
   prepareCrossfade(startAction, endAction, defaultDuration = 1.0) {
-    this.unPauseAllActions()
+    //this.unPauseAllActions()
     this.executeCrossFade(startAction, endAction, defaultDuration)
   }
 
   executeCrossFade(startAction, endAction, duration) {
     this.setWeight(endAction, 1)
-    endAction.time = 0
-    startAction.crossFadeTo(endAction, duration, true)
+    startAction.crossFadeTo(endAction, duration)
+    this.previousAction = endAction
   }
 }
