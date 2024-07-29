@@ -10,6 +10,10 @@ export class Input extends EventDispatcher {
 
   register(key, command) {
     // check if command is in commands...
-    document.addEventListener('keydown', (event) => {})
+    document.addEventListener('keydown', (event) => {
+      if (event.key == key) {
+        command()
+      }
+    })
   }
 }

@@ -72,37 +72,32 @@ app.world.addComponent(playerEntity, 'animation', new AnimationComponent())
 
 // Add data to the mesh component
 await playerEntity.mesh.addMesh('/assets/mesh.gltf')
-//playerEntity.mesh.data.scene.scale.setScalar(0.2)
-// add the entity to the miniplex world
-//app.world.add(playerEntity)
 
-// add the animation data to the entity
-playerEntity.animation.setup(playerEntity)
-//root.position.y = 1.5
-//root.scale.setScalar(0.1)
+if (playerEntity.animation) {
+  // add the animation data to the entity
+  playerEntity.animation.setup(playerEntity)
+  playerEntity.animation.setIdleAnimation('Idle')
 
-let button = createButton('play-button', 'Play')
-button.style.top = '70px'
-document.body.prepend(button)
-button.addEventListener('click', () => {
-  playerEntity.animation.play('Run')
-  console.log(playerEntity.position.x)
-  //playerEntity.mesh.data.scene.position.x = 2
-  playerEntity.position.x = 2
-  console.log(playerEntity.position.x)
-})
+  let buttonActive = false
+  let button = createButton('play-button', 'Play')
+  button.style.top = '70px'
+  document.body.prepend(button)
+  button.addEventListener('click', () => {
+    if (!buttonActive) {
+      playerEntity.animation.crossfadeTo('Run', 0.3)
+    } else {
+      playerEntity.animation.crossfadeTo('Idle', 0.3)
+    }
+
+    buttonActive = !buttonActive
+  })
+}
 
 app.scene.add(playerEntity.mesh.data.scene)
 
-/*let toggle = false
-setInterval(() => {
-  toggle = !toggle
-  if (toggle) {
-    playerEntity.animation.play('Run')
-  } else {
-    playerEntity.animation.play('Idle')
-  }
-}, 1000)*/
+app.input.register('w', () => {
+  playerEntity.position.x += 0.1
+})
 
 app.addEventListener('update', (event) => {
   // ...

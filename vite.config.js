@@ -6,8 +6,8 @@ import viteBasicSslPlugin from '@vitejs/plugin-basic-ssl'
 const options = null
 try {
   const options = {
-    cert: readFileSync('C:\\httpscert\\localhost.pem'),
-    key: readFileSync('C:\\httpscert\\localhost-key.pem'),
+    cert: readFileSync('C:\\httpscert\\localhost-new.pem'),
+    key: readFileSync('C:\\httpscert\\localhost-key-new.pem'),
   }
 } catch (error) {
   console.log(error)
